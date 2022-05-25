@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { API_URL } from "../config/constants";
-import { Carousel } from "antd";
+import { Carousel, Button } from "antd";
 
 dayjs.extend(relativeTime);
 
@@ -48,7 +48,15 @@ function MainPage() {
           );
         })}
       </Carousel>
+
       <h1 id="product-headline">판매되는 상품들</h1>
+      <div id="sort-btn-outer">
+        <div id="sort-btn">
+          <Button type="primary" danger>
+            가나다순정렬
+          </Button>
+        </div>
+      </div>
       <div id="product-list">
         {
           // map은 리턴이 가능함
