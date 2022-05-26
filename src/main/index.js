@@ -12,6 +12,7 @@ dayjs.extend(relativeTime);
 
 function MainPage() {
   const [products, setProducts] = React.useState([]);
+  const [productsSorted, setProductsSorted] = React.useState([]);
   const [banners, setBanners] = React.useState([]);
   React.useEffect(function () {
     axios
@@ -20,6 +21,17 @@ function MainPage() {
         console.log(result);
         const products = result.data.products;
         setProducts(products);
+      })
+      .catch((error) => {
+        console.error("에러 발생 : ", error);
+      });
+
+    axios
+      .get(`${API_URL}/products/sort`)
+      .then((result) => {
+        console.log(result);
+        const productsSorted = result.data.productsSorted;
+        setProductsSorted(productsSorted);
       })
       .catch((error) => {
         console.error("에러 발생 : ", error);
@@ -52,6 +64,47 @@ function MainPage() {
       <h1 id="product-headline">판매되는 상품들</h1>
       <div id="sort-btn-outer">
         <div id="sort-btn">
+          {
+            // map은 리턴이 가능함
+            products.map((product, index) => {
+              return (
+                <div className="product-card" key={index}>
+                  {/* 조건이 맞으면 반환 */}
+                  {product.soldout === 1 && <div className="product-blur" />}
+                  <Link
+                    style={{ color: "inherit" }}
+                    className="product-link"
+                    to={`product/${product.id}`}
+                  >
+                    <div>
+                      <img
+                        className="product-img"
+                        src={`${API_URL}/${product.imageUrl}`}
+                        alt={product.name}
+                      />
+                    </div>
+                    <div className="product-contents">
+                      <span className="product-name">{product.name}</span>
+                      <span className="product-price">{product.price}원</span>
+                      <div className="product-footer">
+                        <div className="product-seller">
+                          <img
+                            className="product-avatar"
+                            src="images/icons/avatar.png"
+                            alt="avatar"
+                          />
+                          <span>{product.seller}</span>
+                        </div>
+                        <span className="product-date">
+                          {dayjs(product.createdAt).fromNow()}
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                </div>
+              );
+            })
+          }
           <Button type="primary" danger>
             가나다순정렬
           </Button>
