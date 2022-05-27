@@ -6,9 +6,12 @@ import "./App.css";
 import MainPageComponent from "./main";
 import UploadPage from "./upload";
 import ProductPage from "./product";
+import MapPage from "./map";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
-import { Button } from "antd";
+import { Button, Layout, Menu } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
+
+const { Header } = Layout;
 
 function App() {
   // const text = '변수 사용';
@@ -19,9 +22,12 @@ function App() {
   //   alert('경고창 띄움')
   // }
   const navigate = useNavigate();
+  let navItem = ["menu1", "menu2", "menu3"];
+
   return (
-    <div>
-      {/* <h1>테스트</h1>
+    <Layout>
+      <div>
+        {/* <h1>테스트</h1>
     <h2>{text}</h2>
     {sayHello()}
     <button onClick={sayHello2}>경고창 띄우는 온클릭 버튼</button>
@@ -32,12 +38,30 @@ function App() {
     <ChildComponent/>
     <ParentComponent />
     <TimerComponent /> */}
-      <div id="header">
-        <div id="header-area">
-          <Link to="/">
-            <img src="/images/icons/logo.png" alt="logo" />
-          </Link>
+        <Header
+          style={{
+            position: "fixed",
+            zIndex: 1,
+            width: "100%",
+          }}
+        >
+          <div className="logo">
+            <Link to="/" className="logoLink">
+              Market
+            </Link>
+          </div>
+
+          <Menu
+            theme="dark"
+            mode="horizontal"
+            defaultSelectedKeys={["2"]}
+            items={new Array(3).fill(null).map((_, index) => ({
+              key: String(index + 1),
+              label: `${navItem[index]}`,
+            }))}
+          />
           <Button
+            className="upload-btn"
             size="large"
             onClick={function () {
               //해당 경로로 이동
@@ -47,17 +71,22 @@ function App() {
           >
             상품 업로드
           </Button>
+        </Header>
+
+        <div id="header">
+          <div id="header-area"></div>
         </div>
+        <div id="body">
+          <Routes>
+            <Route path="/" element={<MainPageComponent />}></Route>
+            <Route path="/product/:id" element={<ProductPage />}></Route>
+            <Route path="/upload" element={<UploadPage />}></Route>
+            <Route path="/map" element={<MapPage />}></Route>
+          </Routes>
+        </div>
+        <div id="footer"></div>
       </div>
-      <div id="body">
-        <Routes>
-          <Route path="/" element={<MainPageComponent />}></Route>
-          <Route path="/product/:id" element={<ProductPage />}></Route>
-          <Route path={"/upload"} element={<UploadPage />}></Route>
-        </Routes>
-      </div>
-      <div id="footer"></div>
-    </div>
+    </Layout>
   );
 }
 
