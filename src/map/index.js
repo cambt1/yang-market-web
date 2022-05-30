@@ -3,6 +3,7 @@ import { React, useState } from "react";
 import "./index.css";
 import { Link } from "react-router-dom";
 import { Radio, Layout } from "antd";
+import MapContainer from "./MapContainer";
 
 const { Content } = Layout;
 
@@ -55,6 +56,7 @@ function Modal() {
       <h4>{글제목[0]}</h4>
       <p>날짜</p>
       <p>상세내용</p>
+      <MapContainer></MapContainer>
     </div>
   );
 }

@@ -22,7 +22,7 @@ function App() {
   //   alert('경고창 띄움')
   // }
   const navigate = useNavigate();
-  let navItem = ["menu1", "menu2", "menu3"];
+  let navItem = ["상품정보", "상품지도"];
 
   return (
     <Layout>
@@ -54,10 +54,17 @@ function App() {
           <Menu
             theme="dark"
             mode="horizontal"
-            defaultSelectedKeys={["2"]}
-            items={new Array(3).fill(null).map((_, index) => ({
+            defaultSelectedKeys={["1"]}
+            items={new Array(2).fill(null).map((_, index) => ({
               key: String(index + 1),
               label: `${navItem[index]}`,
+              onClick: (key) => {
+                if (key.key == 1) {
+                  navigate("/");
+                } else if (key.key == 2) {
+                  navigate("/showMap");
+                }
+              },
             }))}
           />
           <Button
@@ -78,10 +85,16 @@ function App() {
         </div>
         <div id="body">
           <Routes>
-            <Route path="/" element={<MainPageComponent />}></Route>
+            <Route path="/" element={<MainPageComponent />}>
+              <Route path="map" element={<div>지도 나타낼꺼임</div>} />
+              <Route
+                path="recommend"
+                element={<div>추천정보 나타낼꺼임</div>}
+              />
+            </Route>
             <Route path="/product/:id" element={<ProductPage />}></Route>
             <Route path="/upload" element={<UploadPage />}></Route>
-            <Route path="/map" element={<MapPage />}></Route>
+            <Route path="/showMap" element={<MapPage />}></Route>
           </Routes>
         </div>
         <div id="footer"></div>
