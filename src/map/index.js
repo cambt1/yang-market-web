@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 // css적용
 import "./index.css";
 import { Link } from "react-router-dom";
@@ -10,6 +10,9 @@ const { Content } = Layout;
 function MapPage() {
   let categories = ["한식", "중식", "양식", "일식"];
   let [modal, setModal] = useState(false);
+
+  let [tab, setTab] = useState(0);
+  let [fade2, setFade2] = useState("");
   return (
     <>
       <Layout>
@@ -21,27 +24,57 @@ function MapPage() {
               marginTop: 16,
             }}
           >
-            {categories.map((category) => {
-              return <Radio.Button value="{category}">{category}</Radio.Button>;
+            {categories.map((category, key) => {
+              return (
+                <Radio.Button
+                  value="{category}"
+                  onClick={() => {
+                    setTab(key);
+                  }}
+                >
+                  {category}
+                </Radio.Button>
+              );
             })}
           </Radio.Group>
-          {/* <div id="map" style="width:500px;height:400px;"></div> */}
         </Content>
         <h3
           onClick={() => {
-            setModal(true);
+            setModal(!modal);
           }}
         >
           지도 펼치기
         </h3>
         <div>{modal == true ? <Modal /> : null}</div>
+        <TabContent tab={tab} />
       </Layout>
-      {/* <script
-        type="text/javascript"
-        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c60f26c68e16e9bdf81d8b3fe3948ebe"
-      ></script>
-      <script type="text/javascript" src="./map.js"></script> */}
     </>
+  );
+}
+
+function TabContent({ tab }) {
+  let [fade, setFade] = useState("");
+  //탭 state가 변할 때 end 부착
+  useEffect(() => {
+    setTimeout(() => {
+      setFade("end");
+    }, 100);
+    //useEffect실행 전에 실행시키고 싶을 때
+    return () => {
+      setFade("");
+    };
+  }, [tab]);
+  return (
+    <div className={`start ${fade}`}>
+      {
+        [
+          <div>한식마커</div>,
+          <div>중식마커</div>,
+          <div>양식마커</div>,
+          <div>일식마커</div>,
+        ][tab]
+      }
+    </div>
   );
 }
 
@@ -53,9 +86,7 @@ function Modal() {
   ]);
   return (
     <div className="modal">
-      <h4>{글제목[0]}</h4>
       <p>날짜</p>
-      <p>상세내용</p>
       <MapContainer></MapContainer>
     </div>
   );
