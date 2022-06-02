@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 // css적용
 import "./index.css";
-import { Link } from "react-router-dom";
 import { Radio, Layout } from "antd";
 import MapContainer from "./MapContainer";
 
@@ -12,7 +11,6 @@ function MapPage() {
   let [modal, setModal] = useState(false);
 
   let [tab, setTab] = useState(0);
-  let [fade2, setFade2] = useState("");
   return (
     <>
       <Layout>
@@ -24,12 +22,13 @@ function MapPage() {
               marginTop: 16,
             }}
           >
-            {categories.map((category, key) => {
+            {categories.map((category, index) => {
               return (
                 <Radio.Button
+                  key={index}
                   value="{category}"
                   onClick={() => {
-                    setTab(key);
+                    setTab(index);
                   }}
                 >
                   {category}
@@ -45,7 +44,7 @@ function MapPage() {
         >
           지도 펼치기
         </h3>
-        <div>{modal == true ? <Modal /> : null}</div>
+        <div>{modal === true ? <Modal /> : null}</div>
         <TabContent tab={tab} />
       </Layout>
     </>
@@ -79,11 +78,6 @@ function TabContent({ tab }) {
 }
 
 function Modal() {
-  let [글제목, 글제목변경] = useState([
-    "남자코트 추천",
-    "강남 우동맛집",
-    "파이썬독학",
-  ]);
   return (
     <div className="modal">
       <p>날짜</p>
